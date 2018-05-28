@@ -1,38 +1,71 @@
 # BigStream Docker
+Lastest Release version 1.0 : [here](https://github.com/kritpunpreuk/bigstream-docker/archive/1.0.tar.gz)
+
 Docker Image for [BigStream](https://github.com/igridproject/node-bigstream)
 
-see: Docker CE Installation [https://docs.docker.com/engine/installation/](https://docs.docker.com/engine/installation/)
+from orginal bundle version : [bigstream-docker](https://github.com/igridproject/bigstream-docker)
 
-## Build
-ทำการ build image จาก Dockerfile
-```
-docker build -t=igridproject/bigstream .
-```
+see install docker-composer : [https://github.com/docker/compose/releases](https://github.com/docker/compose/releases)
 
-## Run Container
-* เปิด port 19080,19180,19980,5672
-* mount volume ของ bigstream storage data ซึ่งเก็บอยู่ที่ /var/bigstream/data
+## Start docker composer
 ```
-docker run --name node_bigstream -v /root/bigstream/data:/var/bigstream/data \
--p 19980:19980 -p 19080:19080 -p 19180:19180 -p 5672:5672 -it \
--d igridproject/bigstream
+cd bigstream-docker
+docker-compose up -d
 ```
-
 ## Command
-* exec bigstream container shell
+exec bigstream container shell
 ```
 docker exec -it node_bigstream /bin/bash
 ```
-* monitor bigstream process
+monitor bigstream process
 ```
 docker exec -it node_bigstream pm2 monit
 ```
-* restart all bigstream process
+restart all bigstream process
 ```
 docker exec -it node_bigstream pm2 restart all
 ```
-
-* update bigstream from Git
+update bigstream from Git
 ```
 docker exec -it node_bigstream git pull
 ```
+see Redis or Rabbitmq logs
+```
+docker container logs redis_bigstream 
+docker container logs rabbitmq_bigstream 
+```
+
+## default environment variable (.env file)
+
+image tag version
+```
+BIGSTREAM_TAG=latest
+REDIS_TAG=3.2.11
+RABBITMQ_TAG=3.6.12
+```
+
+bigstream datastore volumn path
+```
+BIGSTREAM_VOLUMN=./bigstreamdata
+```
+
+redis data volumn path
+```
+REDIS_VOLUMN=./redis/data
+```
+
+rabbitmq volumn and config path
+```
+RABBITMQ_VOLUMN=./rabbitmq/home
+RABBITMQ_CONFIG=./rabbitmq/rabbitconf/rabbitmq.config
+```
+
+## Override default environment variable file
+use export command 
+
+eg. specified volumn mount for bigstream data
+```
+export BIGSTREAM_VOLUMN=NEWPATH
+docker-compose up -d
+```
+some system using sudo command did not pass environment variable use sudo -E docker-compose up instread.
