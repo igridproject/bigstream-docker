@@ -15,17 +15,15 @@ RUN	apt-get install -y build-essential
 RUN	npm install -y pm2@latest -g
 
 # big-stream clone
-RUN wget https://github.com/igridproject/node-bigstream/archive/1.0.tar.gz
-RUN tar xvf 1.0.tar.gz
-RUN rm -f 1.0.tar.gz
-RUN mv node-bigstream-1.0 ~/node-bigstream
+RUN 	git clone -b dev https://github.com/igridproject/node-bigstream.git ~/node-bigstream
+RUN 	npm install --prefix ~/node-bigstream
+RUN		mkdir -p /var/bigstream/data
 
 WORKDIR /root/node-bigstream
 
-RUN npm install --prefix ~/node-bigstream
-RUN	mkdir -p /var/bigstream/data
 RUN	sed -i 's/127.0.0.1/redis-server/g' ~/node-bigstream/conf/memstore.json
 RUN sed -i 's/127.0.0.1/rabbitmq-server/g' ~/node-bigstream/conf/amqp.json
+
 RUN  node /root/node-bigstream/script/install_plugins.js
 
 EXPOSE 19980 19080 19180
