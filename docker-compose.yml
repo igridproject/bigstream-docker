@@ -1,0 +1,42 @@
+version: '3'
+services:
+  bigstream:
+    image: "bigstream:${BIGSTREAM_TAG}"
+    build: ./bigstream/
+    container_name: node_bigstream
+    restart: always
+    networks:
+     - frontend
+     - backend
+    ports:
+     - "19980:19980"
+     - "19080:19080"
+     - "19180:19180"
+    volumes:
+     - ${BIGSTREAM_VOLUMN}:/var/bigstream/data
+  redis:
+    image: "redis:${REDIS_TAG}"
+    command: redis-server --appendonly yes
+    container_name: redis_bigstream
+    restart: always
+    networks:
+     - backend
+    ports:
+     - "6379:6379"
+    volumes:
+     - ${REDIS_VOLUMN}:/data
+  rabbitmq:
+    image: "rabbitmq:${RABBITMQ_TAG}"
+    command: rabbitmq-server --hostname rabbitmq_bigstream
+    container_name: rabbitmq_bigstream
+    restart: always
+    networks:
+     - backend
+    ports:
+     - "5672:5672"
+    volumes:
+     - ${RABBITMQ_CONFIG}:/etc/rabbitmq/rabbitmq.config
+     - ${RABBITMQ_VOLUMN}:/var/lib/rabbitmq
+networks:
+  frontend:
+  backend:
