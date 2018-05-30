@@ -1,42 +1,41 @@
 version: '3'
 services:
   bigstream:
-    image: "bigstream:${BIGSTREAM_TAG}"
-    build: ./bigstream/
-    container_name: node_bigstream
+    image: "igridproject/bigstream"
+    container_name: bs${PREFIX_NO}_bigstream
     restart: always
     networks:
-     - frontend
-     - backend
+     - bsnet
     ports:
-     - "19980:19980"
-     - "19080:19080"
-     - "19180:19180"
+     - "${PREFIX_NO}980:19980"
+     - "${PREFIX_NO}080:19080"
+     - "${PREFIX_NO}180:19180"
     volumes:
-     - ${BIGSTREAM_VOLUMN}:/var/bigstream/data
+     - ${VOLUME}/bigstream/data:/var/bigstream/data
   redis:
     image: "redis:${REDIS_TAG}"
     command: redis-server --appendonly yes
-    container_name: redis_bigstream
+    container_name: bs${PREFIX_NO}_redis_server
     restart: always
     networks:
-     - backend
+       bsnet:
+	      aliases:
+		     - redis-server
     ports:
      - "6379:6379"
     volumes:
-     - ${REDIS_VOLUMN}:/data
+     - ${VOLUME}/redis/data:/data
   rabbitmq:
-    image: "rabbitmq:${RABBITMQ_TAG}"
-    command: rabbitmq-server --hostname rabbitmq_bigstream
-    container_name: rabbitmq_bigstream
+    image: "igridproject/rabbitmq"
+    command: rabbitmq-server --hostname rabbitmq-server
+    container_name: bs${PREFIX_NO}_rabbitmq_server
     restart: always
     networks:
-     - backend
+       bsnet:
+	      aliases:
+		     - rabbitmq-server
     ports:
      - "5672:5672"
-    volumes:
-     - ${RABBITMQ_CONFIG}:/etc/rabbitmq/rabbitmq.config
-     - ${RABBITMQ_VOLUMN}:/var/lib/rabbitmq
 networks:
-  frontend:
-  backend:
+  bsnet:
+     driver: bridge
