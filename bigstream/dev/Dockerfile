@@ -21,8 +21,9 @@ RUN		mkdir -p /var/bigstream/data
 
 WORKDIR /root/node-bigstream
 
-RUN	sed -i 's/127.0.0.1/redis-server/g' ~/node-bigstream/conf/memstore.json
-RUN sed -i 's/127.0.0.1/rabbitmq-server/g' ~/node-bigstream/conf/amqp.json
+RUN cp ./conf/template/*.json ./conf/
+# RUN	sed -i 's/127.0.0.1/redis-server/g' ~/node-bigstream/conf/memstore.json
+# RUN sed -i 's/127.0.0.1/rabbitmq-server/g' ~/node-bigstream/conf/amqp.json
 
 RUN  node /root/node-bigstream/script/install_plugins.js
 
