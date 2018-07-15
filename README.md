@@ -69,3 +69,11 @@ export BIGSTREAM_VOLUMN=NEWPATH
 docker-compose up -d
 ```
 some system using sudo command did not pass environment variable use sudo -E docker-compose up instread.
+
+## Default API Channel
+
+* Control API :: http://<ip>:19980/v1.2
+* Storage API :: http://<ip>:19080/v1.2
+* Http Channel :: http://<ip>:19180/<AppNameInJob>
+* NBUDP Port :: 19150
+  
