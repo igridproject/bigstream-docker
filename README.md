@@ -72,8 +72,8 @@ some system using sudo command did not pass environment variable use sudo -E doc
 
 ## Default API Channel
 
-* Control API :: http://<ip>:19980/v1.2
-* Storage API :: http://<ip>:19080/v1.2
-* Http Channel :: http://<ip>:19180/<AppNameInJob>
+* Control API :: http://SERVER_IP:19980/v1.2
+* Storage API :: http://SERVER_IP:19080/v1.2
+* Http Channel :: http://SERVER_IP:19180/AppNameInJob
 * NBUDP Port :: 19150
   
