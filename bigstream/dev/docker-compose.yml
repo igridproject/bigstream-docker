@@ -11,6 +11,7 @@ services:
      - "${PREFIX_NO}980:19980"
      - "${PREFIX_NO}080:19080"
      - "${PREFIX_NO}180:19180"
+     - "${PREFIX_NO}150:19150/udp"
     environment:
      - "BS_SECRET=${BS_SECRET}"
     volumes:
