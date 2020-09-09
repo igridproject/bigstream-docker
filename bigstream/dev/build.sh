@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t=bigstream:dev .
+docker build --no-cache -t bigstream:dev .
