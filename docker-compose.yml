@@ -1,41 +1,42 @@
 version: '3'
 services:
   bigstream:
-    image: "igridproject/bigstream"
-    container_name: bs${PREFIX_NO}_bigstream
+    image: "${BIGSTREAM_IMG}"
+    container_name: bs_bigstream
     restart: always
     networks:
-      - bsnet
+     - bsnet
     ports:
-      - "${PREFIX_NO}980:19980"
-      - "${PREFIX_NO}080:19080"
-      - "${PREFIX_NO}180:19180"
+     - "${PREFIX_NO}980:19980"
+     - "${PREFIX_NO}080:19080"
+     - "${PREFIX_NO}180:19180"
+    environment:
+     - "BS_SECRET=${BS_SECRET}"
     volumes:
-      - ${VOLUME}/bigstream/data:/var/bigstream/data
+     - bsdata:/var/bigstream/data
   redis:
     image: "redis:${REDIS_TAG}"
     command: redis-server --appendonly yes
-    container_name: bs${PREFIX_NO}_redis_server
+    container_name: bs_redis_server
     restart: always
     networks:
-      bsnet:
-        aliases:
-          - redis-server
-    ports:
-      - "6379:6379"
+       bsnet:
+          aliases:
+             - redis-server
     volumes:
-      - ${VOLUME}/redis/data:/data
+     - bsredis:/data
   rabbitmq:
-    image: "igridproject/rabbitmq"
+    image: "${RABBITMQ_IMG}"
     command: rabbitmq-server --hostname rabbitmq-server
-    container_name: bs${PREFIX_NO}_rabbitmq_server
+    container_name: bs_rabbitmq_server
     restart: always
     networks:
-      bsnet:
-        aliases:
-          - rabbitmq-server
-    ports:
-      - "5672:5672"
+       bsnet:
+          aliases:
+             - rabbitmq-server
+volumes:
+  bsdata:
+  bsredis:
 networks:
   bsnet:
-    driver: bridge
+     driver: bridge
