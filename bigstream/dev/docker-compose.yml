@@ -1,8 +1,7 @@
 version: '3'
 services:
   bigstream:
-    image: "igridproject/bigstream:dev"
-    build: ./
+    image: ${BIGSTREAM_IMG}
     container_name: bs${PREFIX_NO}_bigstream
     restart: always
     networks:
@@ -26,11 +25,11 @@ services:
           aliases:
              - redis-server
     ports:
-     - "${PREFIX_NO}379:6379"
+     - "6379:6379"
     volumes:
      - ${VOLUME}/redis/data:/data
   rabbitmq:
-    image: "igridproject/rabbitmq"
+    image: ${RABBIT_IMG}
     command: rabbitmq-server --hostname rabbitmq-server
     container_name: bs${PREFIX_NO}_rabbitmq_server
     restart: always
@@ -39,7 +38,9 @@ services:
           aliases:
              - rabbitmq-server
     ports:
-     - "${PREFIX_NO}672:5672"
+     - "5672:5672"
+     - "1883:1883"
+     - "15675:15675"
 networks:
   bsnet:
      driver: bridge
